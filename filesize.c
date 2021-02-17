@@ -7,8 +7,6 @@
 #include <math.h>
 
 int main(int argc,char *argv[]){
-    // Faster to get the name of every file and then calculate size and bucket
-    // readdir is a generator yielding the next file each time
     DIR *dirp = opendir(argv[1]);
     struct dirent *dp;
     struct stat st;
@@ -21,7 +19,6 @@ int main(int argc,char *argv[]){
         if(dp==NULL){continue;}
         if(strcmp(dp->d_name,".")==0 || strcmp(dp->d_name,"..")==0){continue;}
         stat(dp->d_name,&st);
-        //printf("%s \t %d\n",dp->d_name,st.st_size);
         numFiles++;
         long s = (long)st.st_size;
         for(long i =0;i<13;i++){
@@ -32,7 +29,6 @@ int main(int argc,char *argv[]){
     printf("\n");
     int normalised[12];
     for(int i=0;i<12;i++){normalised[i]=50*buckets[i]/numFiles;}
-    //char *buckets = "b12k45M78G9";
     for(int i =0;i<10;i++){
         printf("10^%d %d \t|%.*s>\n",i,buckets[i],normalised[i],"=============================================");
     }
